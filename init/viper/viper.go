@@ -2,14 +2,13 @@ package viper
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
 func (config *Config) Load() *Config {
-	path, err := os.Getwd()
+	path, err := tools.getRootDir()
 	if err != nil {
 		panic(err)
 	}

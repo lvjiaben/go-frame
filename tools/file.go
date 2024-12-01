@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func getRootDir() (string, error) {
+func GetRootDir() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
 		return "", err
