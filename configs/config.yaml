@@ -6,7 +6,7 @@ app:
 log:
   level: "debug"
   filename: "runtime.log"
-  max_size: 200
+  max_size: 20000
   max_backups: 7
   max_age: 30
 
