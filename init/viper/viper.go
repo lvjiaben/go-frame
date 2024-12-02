@@ -1,4 +1,4 @@
-package config
+package viper
 
 import (
 	"fmt"
@@ -11,7 +11,9 @@ import (
 
 type Config map[string]interface{}
 
-func (config *Config) Load() *Config {
+var Conf *Config
+
+func Load() *Config {
 	path, err := tools.GetRootDir()
 	if err != nil {
 		panic(err)
@@ -26,12 +28,12 @@ func (config *Config) Load() *Config {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		fmt.Println("配置文件已修改")
-		if err := viper.Unmarshal(&config); err != nil {
+		if err := viper.Unmarshal(&Conf); err != nil {
 			fmt.Println(err)
 		}
 	})
-	if err := viper.Unmarshal(&config); err != nil {
+	if err := viper.Unmarshal(&Conf); err != nil {
 		panic(err)
 	}
-	return config
+	return Conf
 }
