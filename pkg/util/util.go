@@ -20,3 +20,12 @@ func Marshal(pending string) string {
 	}
 	return s
 }
+
+func IsInSlice(item string, slice []string) bool {
+	for _, s := range slice {
+		if s == item {
+			return true
+		}
+	}
+	return false
+}
