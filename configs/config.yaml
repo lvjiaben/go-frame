@@ -15,7 +15,7 @@ mysql:
   port: 3306
   user: "root"
   pass: ""
-  dbname: "test"
+  dbname: "go-admin"
   charset: "utf8mb4"
   max_open_conns: 10
   max_idle_conns: 10
