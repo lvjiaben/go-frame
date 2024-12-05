@@ -2,7 +2,9 @@ package viper
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/lvjiaben/go-wheel/pkg/file"
 
@@ -25,13 +27,27 @@ func Load() {
 		panic(err)
 	}
 	path = filepath.Join(path, "configs")
+	files, err := getFilesInDir(path)
+	if err != nil {
+		panic(err)
+	}
+	for _, file := range files {
+		filename := strings.TrimSuffix(file.Name(), filepath.Ext(file.Name()))
+		if filename != "config" {
+			viper.SetConfigName(filename)
+			viper.AddConfigPath(path)
+			err := viper.MergeInConfig()
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(path)
-	if err := viper.ReadInConfig(); err != nil {
+	if err := viper.MergeInConfig(); err != nil {
 		panic(err)
 	}
-
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		fmt.Println("配置文件已修改")
@@ -42,4 +58,13 @@ func Load() {
 	if err := viper.Unmarshal(Conf); err != nil {
 		panic(err)
 	}
+
+}
+
+func getFilesInDir(dir string) ([]os.DirEntry, error) {
+	files, err := os.ReadDir(dir)
+	if err != nil {
+		return nil, err
+	}
+	return files, nil
 }

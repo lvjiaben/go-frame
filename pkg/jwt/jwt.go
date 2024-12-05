@@ -4,12 +4,12 @@ import (
 	"errors"
 	"time"
 
+	"github.com/spf13/viper"
+
 	"github.com/dgrijalva/jwt-go"
 )
 
-const TokenExpireDuration = time.Second * 86400 * 7
-
-var jwtSecret = []byte("saopig666")
+var jwtSecret = []byte(viper.GetString("jwt.secret"))
 
 type MyClaims struct {
 	ID int64 `json:"id"`
@@ -20,7 +20,7 @@ func GenToken(ID int64) (string, error) {
 	c := MyClaims{
 		ID,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TokenExpireDuration).Unix(),
+			ExpiresAt: time.Now().Add(time.Second * 86400 * time.Duration(viper.GetInt("jwt.expire_day"))).Unix(),
 			Issuer:    "App",
 		},
 	}

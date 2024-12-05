@@ -1,0 +1,3 @@
+jwt:
+  secret: "go-admin-test"
+  expire_day: 7
